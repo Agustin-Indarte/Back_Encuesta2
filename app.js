@@ -25,6 +25,7 @@ const corsOptions = {
     exposedHeaders: ['Set-Cookie']
 }
 app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 app.use(express.json()); //analizar el cuerpo de la solicitud como JSON
 app.use(urlencoded({
     extended: true //analizar el cuerpo de la solicitud como URL codificada
