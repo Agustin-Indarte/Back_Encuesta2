@@ -21,7 +21,7 @@ const cardSchema = new mongoose.Schema({
         fileType: { type: String }, // Multimedia
         caption: { type: String } // Multimedia
     }
-}, { timestamps: true });
+});
 
 const encuestaSchema = new mongoose.Schema({
     name: { type: String, required: true, trim: true },
@@ -30,7 +30,8 @@ const encuestaSchema = new mongoose.Schema({
     image: { type: String },
     cards: [cardSchema]
 }, {
-    versionKey: false
+    versionKey: false,
+    timestamps: true
 });
 
 export default mongoose.model("Encuesta", encuestaSchema);
