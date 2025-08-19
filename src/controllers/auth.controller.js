@@ -152,12 +152,13 @@ export const profile = async (req,res) => {
 }
 //para preguntar si el token sigue vivo
 export const verifyToken = async(req,res) => {
-    try {      
+    try { 
+        const authHeaders = req.headers.authorization;     
         let token;
 
-         if(!token && req.cookies?.token){ //Valida si NO hay token en memoria pero sí hay un token en las cookies
-            token = req.cookies.token
-        } else{
+        if(authHeaders && authHeaders.startsWith("Bearer ")){
+            token = authHeaders.split(" ")[1];
+        }else{
             return res.status(401).json({meesage: "No token provided"})
         }
 

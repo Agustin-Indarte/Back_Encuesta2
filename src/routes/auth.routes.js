@@ -24,7 +24,6 @@ router.post('/request-password-reset', requestPasswordReset)
 router.post('/reset-password/:token', resetPassword)
 
 
-
 //Estas son las rutas para la imagen de perfil del usuario
 router.post('/upload-profile-image', 
     authRequired, 
