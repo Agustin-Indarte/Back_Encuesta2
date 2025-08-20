@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+/* Modelo de categorias */
 const categorySchema = new mongoose.Schema({
     name:{
         type:String,
