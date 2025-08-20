@@ -3,19 +3,19 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
     username:{
         type:String,
-        require:true,
+        required:true, // corregido
         unique: true,
         trim: true,
     },
     email:{
         type:String,
-        require:true,
+        required:true, // corregido
         unique:true,
         trim: true
     },
     password:{
         type:String,
-        require:true
+        required:true // corregido
     },
     profileImage:{
         type:String,
@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default: false
     },
-    vericationToken:{
+    verificationToken:{
         type:String,
         default:null
     },

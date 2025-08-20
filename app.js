@@ -32,11 +32,38 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Registrar todas las rutas dinámicamente
 const routeFiles = fs.readdirSync('./src/routes');
-routeFiles.forEach(file => {
-  import(`./src/routes/${file}`).then(route => {
-    app.use("/api/v1", route.default);
-  }).catch(err => console.error(`Error cargando ruta ${file}:`, err));
-});
+
+// Iteramos sobre cada archivo encontrado en el directorio de rutas
+routeFiles.forEach((file) => {
+    // Usamos importaciones dinámicas (import()) para cargar cada módulo de ruta.
+    // Esto es útil porque:
+    // 1. Nos permite cargar módulos de forma asíncrona
+    // 2. Cada ruta se registra independientemente
+    // 3. Si una ruta falla, no afecta a las demás
+    import(`./src/routes/${file}`).then((route) => {
+        // Registramos la ruta en nuestra aplicación Express
+        // Todas las rutas importadas serán prefijadas con '/api/v1'
+        // Esto nos da:
+        // - Versionado de API
+        // - Un punto de entrada común para todas las rutas
+        // - Mejor organización del código
+        app.use('/api/v1', route.default);
+        // Log de rutas cargadas después de registrar cada ruta
+        if (app._router && app._router.stack) {
+          console.log(`Rutas cargadas tras registrar ${file}:`);
+          app._router.stack.forEach(r => {
+            if (r.route && r.route.path) {
+              console.log(r.route.path);
+            }
+          });
+        }
+    }).catch((err) => {
+        console.error(`Error al cagrar la ruta ${file}:`, err)
+    })
+})
+
+// Log de rutas cargadas
+// (Eliminado el setTimeout duplicado que causaba el crash)
 
 export default app;
 
