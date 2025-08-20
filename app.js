@@ -6,10 +6,6 @@ import cookieParser from "cookie-parser";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-
-// Importar rutas explícitamente
-import encuestaRoutes from "./src/routes/encuesta.routes.js";
-
 dotenv.config();
 
 const app = express();
@@ -34,15 +30,9 @@ app.use(cors(corsOptions));
 // Archivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
 
-// Registrar rutas explícitas
-app.use("/api/v1", encuestaRoutes);
-
-// Registrar las demás rutas dinámicamente
+// Registrar todas las rutas dinámicamente
 const routeFiles = fs.readdirSync('./src/routes');
 routeFiles.forEach(file => {
-  // Evitar volver a cargar encuesta.routes.js
-  if (file === 'encuesta.routes.js') return;
-
   import(`./src/routes/${file}`).then(route => {
     app.use("/api/v1", route.default);
   }).catch(err => console.error(`Error cargando ruta ${file}:`, err));
