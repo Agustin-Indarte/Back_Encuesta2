@@ -56,12 +56,22 @@ routeFiles.forEach((file) => {
         // - Un punto de entrada común para todas las rutas
         // - Mejor organización del código
         app.use('/api/v1', route.default);
+        // Log de rutas cargadas después de registrar cada ruta
+        if (app._router && app._router.stack) {
+          console.log(`Rutas cargadas tras registrar ${file}:`);
+          app._router.stack.forEach(r => {
+            if (r.route && r.route.path) {
+              console.log(r.route.path);
+            }
+          });
+        }
     }).catch((err) => {
         console.error(`Error al cagrar la ruta ${file}:`, err)
     })
 })
 
-
+// Log de rutas cargadas
+// (Eliminado el setTimeout duplicado que causaba el crash)
 
 export default app;
 
